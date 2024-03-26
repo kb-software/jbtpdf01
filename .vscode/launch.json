@@ -9,7 +9,8 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "com.example.Main",
-            "projectName": "demo"
+            "projectName": "demo",
+            "args": "-f /Users/erwinpalma/Documents/GitHub/jbtpdf01/demo/pdf.pdf"
         },
         {
             "type": "java",

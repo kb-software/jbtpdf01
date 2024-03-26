@@ -12,15 +12,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.pdfbox.io.RandomAccessFile;
 
-
-
 public class Main {
 
-    static String myFile = "/Users/erwinpalma/Documents/GitHub/jbtpdf01/demo/pdf.pdf";
+    //static String myFile = "/Users/erwinpalma/Documents/GitHub/jbtpdf01/demo/pdf.pdf";
+    static String myFile = "";
+    static String example = "";
 
-    public static void uno() {
+    public static void readPDF() {
         String string = null;
-        File file = new File(myFile, "r");
         try {
             PDFParser pdfParser = new PDFParser(new RandomAccessFile(new File(myFile), "r"));
             pdfParser.parse();
@@ -37,12 +36,60 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        uno();
-    }
-    public static void main2(String[] args) throws IOException {
+        if (getArgs(args)) {
 
-        try (PDDocument document = PDDocument.load(new File(
-                "/Users/erwinpalma/Documents/GitHub/jbtpdf01/demo/pdf.pdf"))) {
+            try {
+                if (args[2].contains("-example")) {
+                    example2();
+                } else {
+                    readPDF();
+                }
+            } catch (Exception e) {
+                readPDF();
+            }
+        }
+    }
+
+    public static boolean getArgs(String[] args) throws IOException {
+        // Checking if length of args array is
+        // greater than 0
+        String fileArg = "";
+        String fileArgValue = "";
+
+        if (args.length > 0) {
+            fileArg = args[0];
+            fileArgValue = args[1];
+
+            
+
+            if (fileArg.contains("-f")) {
+                File f = new File(args[1]);
+                if (f.exists()) {
+                    // Show if the file exists
+                    System.out.println("Exists");
+                    myFile = fileArgValue;
+                    return true;
+                } else {
+                    // Show if the file does not exists
+                    System.out.println("Does not Exists");
+                    return false;
+                }
+            } else {
+                System.out.println("Arguments -f not found.");
+                return false;
+            }
+
+        } else {
+            // Print statements
+            System.out.println("No command line arguments found.");
+            return false;
+        }
+        //return false;
+    }
+
+    public static void example2() throws IOException {
+
+        try (PDDocument document = PDDocument.load(new File(myFile))) {
 
             document.getClass();
 
@@ -61,24 +108,7 @@ public class Main {
                 for (String line : lines) {
                     System.out.println(line);
                 }
-
             }
-
         }
-    }
-
-    String file = "/Users/erwinpalma/Documents/GitHub/jbtpdf01/demo/pdf.pdf";
-
-    @Test
-    public void givenSamplePdf_whenUsingApachePdfBox_thenCompareOutput() throws IOException {
-
-        //String expectedText = "Hello World!\n";
-        File file = new File(this.file);
-        PDDocument document = PDDocument.load(file);
-        PDFTextStripper stripper = new PDFTextStripper();
-        String text = stripper.getText(document);
-        document.close();
-
-        //assertEquals(expectedText, text);
     }
 }
